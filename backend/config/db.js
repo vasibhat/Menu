@@ -1,15 +1,12 @@
-const mongoose =require("mongoose");
+import mongoose from "mongoose";
 
-const url ="mongodb+srv://vasi:vasi2001@cluster0.kieexzv.mongodb.net/";
-
-mongoose.set("strrictQuery", true);
-mongoose.connect(url, {
-
-
-}).then(() =>
-{
-    console.log("Connection Successfully")
-}).catch((err)=>{
-    console.log("no connection")
-})
-
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    process.exit(1);
+  }
+};
+export default connectDB;
