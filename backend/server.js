@@ -8,6 +8,8 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 import menuRoutes from "./routes/menuRoutes.js";
 
+import menu from "./data/menu.js";
+
 const port = process.env.PORT || 5000;
 
 connectDB();
@@ -25,9 +27,20 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// //Routes
-app.use("/api/menu", menuRoutes);
-// app.use("/api/orders", orderRoutes);
+app.get("/api/menu", (req, res) => {
+  res.json(menu);
+});
+
+app.get("/api/menu/:id", (req, res) => { 
+  const menuItem = menu.find((m) => m._id == req.params.id); 
+  if (menuItem) {
+    res.json(menuItem);
+  } else {
+    res.status(404).send("Menu item not found");
+  }
+});
+
+
 
 // Error handling
 app.use(notFound);
